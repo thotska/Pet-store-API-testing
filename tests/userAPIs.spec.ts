@@ -34,11 +34,18 @@ test.describe('User API Tests', () => {
     });
 
     test("Get user by username", async ({request}) => {
-        const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
         const username = "TestUserNameTetiana99";
     
         const getUserByUsernameResponse = await request.get(`${BASE_URL}/user/${username}`);
         
+        let getUserResponse;
+        for (let i = 0; i < 5; i++) {
+            getUserResponse = await request.get(`${BASE_URL}/user/${username}`);
+            if(getUserResponse.status() === 200) {
+                break; // Exit loop if the request is successful
+            }
+            console.log(`Attempt ${i + 1} failed. Retrying...`);
+        }
     
         expect(getUserByUsernameResponse.status()).toBe(200);
         const getUserByUsernameResponseBody = await getUserByUsernameResponse.json();
@@ -57,7 +64,6 @@ test.describe('User API Tests', () => {
     });
 
     test("Delete user by username", async ({request}) => {
-        const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
         const username = "TestUserNameTetiana99";
 
         const deleteUserByUsernameResponse = await request.delete(`${BASE_URL}/user/${username}`);
