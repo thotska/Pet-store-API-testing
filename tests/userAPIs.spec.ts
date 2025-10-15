@@ -3,10 +3,8 @@ import z from 'zod';
 import { faker } from '@faker-js/faker';
 
 test.describe('User API Tests', () => {
-    const baseURL = (process.env.BASE_URL ?? '') + (process.env.API_VERSION ?? '');
-
-    test('Create a new User', async ({ request }) => {
-        const createNewUserRequestBody = {
+    const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
+    const createNewUserRequestBody = {
             "id": 12452,
             "username": "TestUserNameTetiana99",
             "firstName": faker.person.firstName(),
@@ -16,8 +14,10 @@ test.describe('User API Tests', () => {
             "phone": faker.phone.number(),
             "userStatus": 0
         };
+    test('Create a new User', async ({ request }) => {
+        
 
-        const createNewUserResponse = await request.post(`${baseURL}/user`, {
+        const createNewUserResponse = await request.post(`${BASE_URL}/user`, {
             data: createNewUserRequestBody
         });
         expect(createNewUserResponse.status()).toBe(200);
@@ -31,6 +31,46 @@ test.describe('User API Tests', () => {
         createNewUserResponseSchema.parse(createNewUserResponseBody);
 
 
+    });
+
+    test("Get user by username", async ({request}) => {
+        const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
+        const username = "TestUserNameTetiana99";
+    
+        const getUserByUsernameResponse = await request.get(`${BASE_URL}/user/${username}`);
+        
+    
+        expect(getUserByUsernameResponse.status()).toBe(200);
+        const getUserByUsernameResponseBody = await getUserByUsernameResponse.json();
+        const getUserByUsernameResponseSchema = z.object({
+            id: z.number().int(),
+            username: z.literal(username),
+            firstName: z.string(),
+            lastName: z.string(),
+            email: z.string().email(),
+            password: z.string(),
+            phone: z.string(),
+            userStatus: z.number().int()
+        });
+    
+        getUserByUsernameResponseSchema.parse(getUserByUsernameResponseBody);
+    });
+
+    test("Delete user by username", async ({request}) => {
+        const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
+        const username = "TestUserNameTetiana99";
+
+        const deleteUserByUsernameResponse = await request.delete(`${BASE_URL}/user/${username}`);
+
+        expect(deleteUserByUsernameResponse.status()).toBe(200);
+        const deleteUserByUsernameResponseBody = await deleteUserByUsernameResponse.json();
+        const deleteUserByUsernameResponseSchema = z.object({
+            code: z.literal(200),
+            type: z.literal('unknown'),
+            message: z.literal(username),
+        });
+
+        deleteUserByUsernameResponseSchema.parse(deleteUserByUsernameResponseBody);
     });
 });
 
