@@ -3,7 +3,7 @@ import z from 'zod';
 import { faker } from '@faker-js/faker';
 
 test.describe('User API Tests', () => {
-    const baseURL = "https://petstore.swagger.io/v2";
+    const baseURL = (process.env.BASE_URL ?? '') + (process.env.API_VERSION ?? '');
 
     test('Create a new User', async ({ request }) => {
         const createNewUserRequestBody = {

@@ -4,7 +4,7 @@ import {faker} from '@faker-js/faker';
 
 
 test("Get user by username", async ({request}) => {
-    const baseURL = "https://petstore.swagger.io/v2";
+    const baseURL = (process.env.BASE_URL ?? '') + (process.env.API_VERSION ?? '');
     const username = "TestUserNameTetiana99";
 
     const getUserByUsernameResponse = await request.get(`${baseURL}/user/${username}`);
