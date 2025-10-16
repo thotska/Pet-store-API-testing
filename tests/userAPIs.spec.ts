@@ -22,6 +22,29 @@ test.describe("end to end test - Create, Get, Update, Delete user", () => {
         type: z.literal('unknown'),
         message: z.literal(createNewUserRequestBody.id.toString()),
     });
+
+    const getExpectedGetUserResponseSchema = z.object({
+        id: z.number().int(),
+        username: z.literal(createNewUserRequestBody.username),
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string().email(),
+        password: z.string(),
+        phone: z.string(),
+        userStatus: z.number().int()
+    });
+
+    const updateUserRequestBody = {
+        "id": 12452,
+        "username": createNewUserRequestBody.username,
+        "firstName": faker.person.firstName(),
+        "lastName": faker.person.lastName(),
+        "email": faker.internet.email(),
+        "password": faker.internet.password(),
+        "phone": faker.phone.number(),
+        "userStatus": 1
+    };
+
     test('Create, Get, Update, Delete user', async ({ request }) => {
         await postAPI(
             request,
@@ -34,46 +57,21 @@ test.describe("end to end test - Create, Get, Update, Delete user", () => {
             request,
             `${BASE_URL}/user/${createNewUserRequestBody.username}`,
             200,
-            z.object({
-                id: z.number().int(),
-                username: z.literal(createNewUserRequestBody.username),
-                firstName: z.string(),
-                lastName: z.string(),
-                email: z.string().email(),
-                password: z.string(),
-                phone: z.string(),
-                userStatus: z.number().int()
-            })
+            getExpectedGetUserResponseSchema
         );
+
         await putAPI(
             request,
             `${BASE_URL}/user/${createNewUserRequestBody.username}`,
-            {
-                "id": 12452,
-                "username": createNewUserRequestBody.username,
-                "firstName": faker.person.firstName(),
-                "lastName": faker.person.lastName(),
-                "email": faker.internet.email(),
-                "password": faker.internet.password(),
-                "phone": faker.phone.number(),
-                "userStatus": 1
-            },
+            updateUserRequestBody,
             200,
-            z.object({
-                code: z.literal(200),
-                type: z.literal('unknown'),
-                message: z.literal("12452"),
-            })
+            createNewUserResponseSchema
         );
         await deleteAPI(
             request,
             `${BASE_URL}/user/${createNewUserRequestBody.username}`,
             200,
-            z.object({
-                code: z.literal(200),
-                type: z.literal('unknown'),
-                message: z.literal(createNewUserRequestBody.username),
-            })
+            createNewUserResponseSchema
         );
     });
 });
