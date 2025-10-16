@@ -40,7 +40,7 @@ export default defineConfig({
   /* Shared settings for all the projects below */
   use: {
     /* Base URL to use in actions like `await request.get('/')` */
-    baseURL: process.env.BASE_URL || 'https://petstore.swagger.io/v2',
+    baseURL: `${process.env.BASE_URL}${process.env.API_VERSION}`,
     
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
