@@ -55,6 +55,44 @@ test.describe('User API Tests', () => {
         );
     });
 
+
+    test("Update user by username", async ({request}) => {
+        const username = createNewUserRequestBody.username;
+        const updateUserRequestBody = {
+            "id": 12452,
+            "username": username,
+            "firstName": faker.person.firstName(),
+            "lastName": faker.person.lastName(),
+            "email": faker.internet.email(),
+            "password": faker.internet.password(),
+            "phone": faker.phone.number(),
+            "userStatus": 1
+        };
+
+        const updateUserResponseSchema = z.object({
+            code: z.literal(200),
+            type: z.literal('unknown'),
+            message: z.literal(updateUserRequestBody.id.toString()),
+        });
+
+        await putAPI(
+            request,
+            `${BASE_URL}/user/${username}`,
+            updateUserRequestBody,
+            200,
+            updateUserResponseSchema
+        );
+    });
+
+
+
+
+
+
+
+
+
+            
     test("Delete user by username", async ({request}) => {
         const username = createNewUserRequestBody.username;
 
