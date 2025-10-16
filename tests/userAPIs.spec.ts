@@ -3,7 +3,8 @@ import z from 'zod';
 import { faker } from '@faker-js/faker';
 import { getAPI, postAPI, putAPI, deleteAPI } from '../utils/apiCallHelper';
 
-test("end to end test - Create, Get, Update, Delete user", async ({ request }) => {
+
+test.describe("end to end test - Create, Get, Update, Delete user", () => {
     const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
     const createNewUserRequestBody = {
         "id": 12452,
@@ -21,12 +22,13 @@ test("end to end test - Create, Get, Update, Delete user", async ({ request }) =
         type: z.literal('unknown'),
         message: z.literal(createNewUserRequestBody.id.toString()),
     });
-    await postAPI(
-        request,
-        `${BASE_URL}/user`,
-        createNewUserRequestBody,
-        200,
-        createNewUserResponseSchema);
+    test('Create, Get, Update, Delete user', async ({ request }) => {
+        await postAPI(
+            request,
+            `${BASE_URL}/user`,
+            createNewUserRequestBody,
+            200,
+            createNewUserResponseSchema);
 
         await getAPI(
             request,
@@ -74,3 +76,4 @@ test("end to end test - Create, Get, Update, Delete user", async ({ request }) =
             })
         );
     });
+});
