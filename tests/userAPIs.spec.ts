@@ -3,6 +3,7 @@ import z from 'zod';
 import { faker } from '@faker-js/faker';
 import { getAPI, postAPI, putAPI, deleteAPI} from '../utils/apiCallHelper';
 
+
 test.describe('User API Tests', () => {
     const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`
     const createNewUserRequestBody = {

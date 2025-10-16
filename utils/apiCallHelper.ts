@@ -1,7 +1,6 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import { ZodTypeAny } from 'zod';
 
-
 /**
  * Explanation: Reusable GET method with retry logic
  * @param request -> Playwright's APIRequestContext comes from the test method
