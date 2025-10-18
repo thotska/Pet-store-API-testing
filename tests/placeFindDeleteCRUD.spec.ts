@@ -20,32 +20,19 @@ test.describe("Place, Find, and Delete Pet Order CRUD Operations", () => {
         message: z.string()
     });
 
-    test('Place a new Pet Order', async ({ request }) => {
-        await postAPI(request, 
-            `${BASE_URL}/store/order`, 
-            {
-                id: faker.number.int(),
-                petId: faker.number.int(),
-                quantity: faker.number.int({ min: 1, max: 5 }),
-                shipDate: new Date().toISOString(),
-                status: "delivered",
-                complete: true
-            },
-            200,
-            petOrderSchema);
-    }); 
+    const orderRequestBody = {
+        id: faker.number.int(),
+        petId: faker.number.int(),
+        quantity: faker.number.int({ min: 1, max: 5 }),
+        shipDate: new Date().toISOString(),
+        status: "delivered",
+        complete: true
+    };
 
-    test('Find the Pet Order by ID', async ({ request }) => {
+    test('CRUD: Create, Read, and Delete Pet Order', async ({ request }) => {
         const newOrderResponse = await postAPI(request, 
             `${BASE_URL}/store/order`, 
-            {
-                id: faker.number.int(),
-                petId: faker.number.int(),
-                quantity: faker.number.int({ min: 1, max: 5 }),
-                shipDate: new Date().toISOString(),
-                status: "delivered",
-                complete: true
-            },
+            orderRequestBody,
             200,
             petOrderSchema);
 
@@ -56,28 +43,10 @@ test.describe("Place, Find, and Delete Pet Order CRUD Operations", () => {
              `${BASE_URL}/store/order/${orderId}`,
               200, 
               petOrderSchema);
-    });
-
-    test('Delete the Pet Order by ID', async ({ request }) => {
-        const newOrderResponse = await postAPI(request, 
-            `${BASE_URL}/store/order`, 
-            {   
-                id: faker.number.int(),
-                petId: faker.number.int(),
-                quantity: faker.number.int({ min: 1, max: 5 }),
-                shipDate: new Date().toISOString(),
-                status: "delivered",
-                complete: true
-            },
-            200,
-            petOrderSchema);
-
-        const newOrder = await newOrderResponse.json();
-        const orderId = newOrder.id;
 
         await deleteAPI(request,
              `${BASE_URL}/store/order/${orderId}`, 
              200,
             deletePurchaseOrderByIdResponseSchema);
-    })
+    });
 });
