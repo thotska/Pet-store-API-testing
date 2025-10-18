@@ -1,6 +1,7 @@
 import { test, expect, request } from '@playwright/test';
 import z, { array } from 'zod';
 import { faker } from '@faker-js/faker';
+import { getAPI } from '../utils/apiCallHelper';
 
 
 test.describe("Get Pets by Status", () => {
@@ -19,10 +20,9 @@ test.describe("Get Pets by Status", () => {
         status: z.enum(['available', 'pending', 'sold'])
     }));
     test('Get Pets by Status - available', async ({ request }) => {
-        const status = 'available';
-        const getPetsByStatusResponse = await request.get(`${BASE_URL}/pet/findByStatus?status=${status}`);
-        expect(getPetsByStatusResponse.status()).toBe(200);
-        const getPetsByStatusResponseBody = await getPetsByStatusResponse.json();
-        getPetsByStatusResponseSchema.parse(getPetsByStatusResponseBody);
+        await getAPI(request, 
+            `${BASE_URL}/pet/findByStatus?status=available`, 
+            200,
+            getPetsByStatusResponseSchema);
     });
 });
