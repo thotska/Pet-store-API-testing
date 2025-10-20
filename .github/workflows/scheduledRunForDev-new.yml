@@ -1,4 +1,4 @@
-name: Scheduled Run for QA
+name: Scheduled Run for Dev
 
 on:
   schedule:
