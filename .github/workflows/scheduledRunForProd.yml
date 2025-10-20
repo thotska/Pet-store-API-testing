@@ -28,8 +28,8 @@ jobs:
       - name: Run tests for QA
         run: npm test
         env:
-          base_url: 'https://petstore.swagger.io'
-          api_version: '/v2'
+          BASE_URL: https://petstore.swagger.io
+          API_VERSION: /v2
         continue-on-error: true
       
       - name: Upload test report
@@ -47,4 +47,3 @@ jobs:
           name: test-results-qa
           path: test-results/
           retention-days: 30
-
