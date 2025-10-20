@@ -1,0 +1,48 @@
+name: Scheduled Run for QA
+on:
+  schedule:
+    # Runs every day at 10:00 AM UTC
+    - cron: '0 10 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'LTS'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      
+      - name: Run tests for QA
+        env:
+          base_url: 'https://petstore.swagger.io'
+          api_version: '/v2'
+        run: npm test
+        continue-on-error: true
+      
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-qa
+          path: playwright-report/
+          retention-days: 30
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-qa
+          path: test-results/
+          retention-days: 30
