@@ -7,11 +7,11 @@ import { getAPI, deleteAPI, postAPI } from '../utils/apiCallHelper';
 test.describe("Place, Find, and Delete Pet Order CRUD Operations", () => {
     const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`;
     const petOrderSchema = object({
-        id: number(),
-        petId: number(),
-        quantity: number(),
-        shipDate: string(),
-        status: string(),
+        id: z.number(),
+        petId: z.number(),
+        quantity: z.number(),
+        shipDate: z.string(),
+        status: z.string(),
         complete: z.boolean()
     });
     const deletePurchaseOrderByIdResponseSchema = z.object({
