@@ -1,5 +1,4 @@
 name: Scheduled Run for QA
-
 on:
   schedule:
     # Runs every day at 10:00 AM UTC
