@@ -7,7 +7,13 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "perf:stress": "k6 run performance/stress-test.ts --out json=test-results/k6-results.json",
+    "perf:spike": "k6 run performance/spike-test.ts",
+    "perf:spike-demo": "k6 run performance/spike-test.ts --duration 1m --vus 100",
+    "perf:demo": "k6 run performance/stress-test.ts --duration 1m --vus 50",
+    "perf:report": "start performance-report.html",
+    "perf:spike-report": "start spike-test-report.html"
   },
   "keywords": [
     "playwright",
@@ -20,6 +26,7 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.48.0",
+    "@types/k6": "^1.4.0",
     "@types/node": "^22.7.8",
     "typescript": "^5.6.3"
   },
