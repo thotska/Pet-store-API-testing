@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "perf:stress": "k6 run performance/stress-test.ts --out json=test-results/k6-results.json",
+    "perf:demo": "k6 run performance/stress-test.ts --duration 1m --vus 50",
+    "perf:report": "start performance-report.html"
+  }
+}
